@@ -1,0 +1,22 @@
+{% extends "lucyDJ/base.html" %}
+{% block content %}
+<h1> Беспорядочная куча мусора от работы модели</h1>
+<table>
+<thead>
+    <tr>
+        <td>
+    X-coordinate
+        </td>
+        <td>
+    Y-coordinate
+        </td>
+    </tr>
+</thead>
+    {% for line in lines %}
+    <tr>
+    <td> {{line.abscissa }} </td>
+    <td> {{line.ordinate}} </td>
+    </tr>
+    {% endfor %}
+</table>
+{% endblock %}
