@@ -2,188 +2,73 @@
 {% block content %}
 <h1> Беспорядочная куча мусора от работы модели</h1>
 
+<div class="buttonpanel">
+    <form action="" method="get">
+        <input style="top: 10%" id="calcparams" type=number step="any" name="Amplitude">
+        {{ form.amplitude }}
+        <input type="submit" value="Apply" style="top: 15%">
+    </form>
+        <button style="top: 25%" id="launch"> Launch </button>
+        <button style="top: 35%" id="show_graph"> Show graph</button>
+        <input style="top: 55%" id="request">
+        <button style="top: 60%"id="filter"> Filter </button>
+</div>
+
 <script>
 $(function () {
-    // Create the chart
+var amp = $('#calcparams').val();
+var te = amp.toString();
     $('#container').highcharts({
         chart: {
-            type: 'column'
+            type: 'scatter',
+            zoomType: 'xy'
         },
         title: {
-            text: 'Failed requisitions precedences rated by object type'
-        },
-        subtitle: {
-            text: 'Click the columns to view all fail for this object type.'
+            text: te
         },
         xAxis: {
-            type: 'category'
+            title: {
+                text: 'phase'
+            }
         },
         yAxis: {
             title: {
-                text: 'Total percent requisitions fails'
-            }
-
-        },
-        legend: {
-            enabled: false
-        },
-        plotOptions: {
-            series:
-            {
-                borderWidth: 0,
-                dataLabels:
-                {
-                    enabled: true,
-                    format: '{point.y:.1f}%'
-                }
+                text: 'Values'
             }
         },
-
-        tooltip: {
-            headerFormat: '<span style="font-size:2.2em">{series.name}</span><br>',
-            pointFormat: '<span style="color:{point.color}">{point.name}</span>: <b>{point.y:.2f}%</b> of total<br/>'
-        },
-
-        series:
-            [{
-                name: "Objects",
-                colorByPoint: true,
-                data:
-                    [{
-                        name: "penguin",
-                        y: 56.33,
-                        drilldown: "penguin"
-                    },
-                {
-                    name: "rocket",
-                    y: 24.03,
-                    drilldown: "rocket"
-                },
-                        {
-                            name: "ISS",
-                            y: 10.38,
-                            drilldown: "ISS"
-                        },
-                    {
-                        name: "super rocket",
-                        y: 4.77,
-                        drilldown: "super rocket"
-                    },
-                            {
-                                name: "super mega rocket",
-                                y: 0.91,
-                                drilldown: "super mega rocket"
-                            },
-                        {
-                            name: "None",
-                            y: 0.2,
-                            drilldown: null
-                        }]
-            }],
-        drilldown: {
-            series: [{
-                name: "penguin",
-                id: "penguin",
-                data: [
-                    [ "0", 24.13 ],
-                    [ "v8.0", 17.2 ],
-                    [ "v9.0", 8.11 ],
-                    [ "v10.0", 5.33 ],
-                    [ "v6.0", 1.06 ],
-                    [ "v7.0", 0.5 ]
-                ]
-            },
-            {
-                name: "rocket",
-                id: "rocket",
-                data: [
-                    [ "v40.0", 5 ],
-                    [ "v41.0", 4.32 ],
-                    [ "v42.0", 3.68 ],
-                    [ "v39.0", 2.96 ],
-                    [ "v36.0", 2.53 ],
-                    [ "v43.0", 1.45 ],
-                    [ "v31.0", 1.24 ],
-                    [ "v35.0", 0.85 ],
-                    [ "v38.0", 0.6 ],
-                    [ "v32.0", 0.55 ],
-                    [ "v37.0", 0.38 ],
-                    [ "v33.0", 0.19 ],
-                    [ "v34.0", 0.14 ],
-                    [ "v30.0", 0.14 ]
-                    ]
-            },
-            {
-                name: "ISS",
-                id: "ISS",
-                data: [
-                    [ "v35", 2.76 ],
-                    [ "v36", 2.32 ],
-                    [ "v37", 2.31 ],
-                    [ "v34", 1.27 ],
-                    [ "v38", 1.02 ],
-                    [ "v31", 0.33 ],
-                    [ "v33", 0.22 ],
-                    [ "v32", 0.15 ]
-                    ]
-            },
-            {
-                name: "super rocket",
-                id: "super rocket",
-                data: [
-                    [ "v8.0", 2.56 ],
-                    [ "v7.1", 0.77 ],
-                    [ "v5.1", 0.42 ],
-                    [ "v5.0", 0.3 ],
-                    [ "v6.1", 0.29 ],
-                    [ "v7.0", 0.26 ],
-                    [ "v6.2", 0.17 ]
-                    ]
-            },
-                {
-                    name: "super mega rocket",
-                    id: "super mega rocket",
-                    data: [
-                    [ "v12.x", 0.34 ],
-                    [ "v28", 0.24 ],
-                    [ "v27", 0.17 ],
-                    [ "v29", 0.16 ]
-                    ]
-                }]
-        }
+        series: [{
+            name: 'Data pull',
+            data:
+                [{% for line in lines %}
+            [{{ line.abscissa }}, {{ line.ordinate }} * amp],
+            {% endfor %}]
+        }]
     });
 });
 </script>
 
-    <div class="graphblock" id="container"></div>
-
-    <div class="tableblock">
-        <table>
-            <thead>
-                <tr>
-                    <td>
-                        X-coordinate
-                    </td>
-        <td>
-            Y-coordinate
-        </td>
-                </tr>
-            </thead>
-            {% for line in lines %}
+<div id="container" class="rubberblock"> </div>
+<div class="rubberblock" style="top: 53.75%">
+    <table>
+        <thead>
             <tr>
-                <td> {{line.abscissa }} </td>
-                <td> {{line.ordinate}} </td>
+                <td>
+                    X-coordinate
+                </td>
+                <td>
+                    Y-coordinate
+                </td>
             </tr>
-            {% endfor %}
-        </table>
-    </div>
-    <div class="buttonpanel">
-        <input style="top: 80px" id="realisations">
-        <button style="top: 125px" id="config_ready"> Apply </button>
-        <button style="top: 180px" id="launch"> Launch </button>
-        <button style="top: 225px" id="show_graph"> Show graph</button>
-        <input style="top: 450px" id="request">
-        <button style="top: 495px"id="filter"> Filter </button>
-    </div>
+        </thead>
+        {% for line in lines %}
+        <tr>
+            <td> {{line.abscissa }} </td>
+            <td> {{line.ordinate}} </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+
 {% endblock %}
 
