@@ -4,14 +4,15 @@
 
 <div class="buttonpanel">
     <form action="" method="get">
-        <label for="id_amplitude" > Amplitude: </label>
         {{ form.amplitude }}
         <input type="submit" value="Apply" style="top: 15%">
+        <label for="id_amplitude" > Amplitude: </label>
+        {{ form.toclear}}
     </form>
-    <button style="top: 25%" id="launch"> Launch </button>
-    <button style="top: 35%" id="show_graph"> Show graph</button>
-    <input style="top: 55%" id="request" type=number>
-    <button style="top: 60%"id="filter"> Filter </button>
+    <button style="top: 45%" id="launch"> Launch </button>
+    <button style="top: 55%" id="show_graph"> Show graph</button>
+    <input style="top: 65%" id="request" type=number>
+    <button style="top: 70%"id="filter"> Filter </button>
 </div>
 
 <script>
@@ -40,7 +41,7 @@ var te = amp.toString();
             name: 'Data pull',
             data:
                 [{% for line in lines %}
-            [{{ line.abscissa }}, {{ line.ordinate }} * amp],
+            [{{ line.abscissa }}, {{ line.ordinate }}],
             {% endfor %}]
         }]
     });
