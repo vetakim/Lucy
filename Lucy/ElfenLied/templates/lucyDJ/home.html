@@ -4,23 +4,19 @@
 
 <div class="buttonpanel">
     <form action="" method="get">
-        <input id="amplitude" type=number name="amplitude" style="top: 10%">
-        {% csrf_token %}
-        {{ form.as_p }}
-    <input type="submit" value="Apply" style="top: 15%">
+        <label for="id_amplitude" > Amplitude: </label>
+        {{ form.amplitude }}
+        <input type="submit" value="Apply" style="top: 15%">
     </form>
-    <p style="top: 60%; background: #fa0000;">
-    -- {{ amplitude.value }} --
-    </p>
-
-        <button style="top: 25%" id="launch"> Launch </button>
-        <button style="top: 35%" id="show_graph"> Show graph</button>
-        <input style="top: 55%" id="request">
-        <button style="top: 60%"id="filter"> Filter </button>
+    <button style="top: 25%" id="launch"> Launch </button>
+    <button style="top: 35%" id="show_graph"> Show graph</button>
+    <input style="top: 55%" id="request" type=number>
+    <button style="top: 60%"id="filter"> Filter </button>
 </div>
+
 <script>
 $(function () {
-var amp = $('#amplitude').val();
+var amp = {{ amplitude }}
 var te = amp.toString();
     $('#container').highcharts({
         chart: {
@@ -53,24 +49,26 @@ var te = amp.toString();
 
 <div id="container" class="rubberblock"> </div>
 <div class="rubberblock" style="top: 53.75%">
-    <table>
-        <thead>
+    <div class="rubberblock-inner">
+        <table>
+            <thead>
+                <tr>
+                    <td>
+                        X-coordinate
+                    </td>
+                    <td>
+                        Y-coordinate
+                    </td>
+                </tr>
+            </thead>
+            {% for line in lines %}
             <tr>
-                <td>
-                    X-coordinate
-                </td>
-                <td>
-                    Y-coordinate
-                </td>
+                <td> {{line.abscissa }} </td>
+                <td> {{line.ordinate}} </td>
             </tr>
-        </thead>
-        {% for line in lines %}
-        <tr>
-            <td> {{line.abscissa }} </td>
-            <td> {{line.ordinate}} </td>
-        </tr>
-        {% endfor %}
-    </table>
+            {% endfor %}
+        </table>
+    </div>
 </div>
 
 

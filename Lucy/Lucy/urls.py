@@ -14,11 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url, include
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import admin
 from ElfenLied.views import *
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'ElfenLied/home/$', vizualisation, name='homeout'),
-    url(r'ElfenLied/home/$', accept_data, name='homein')
+    url(r'ElfenLied/home/$', csrf_exempt(accept_data), name='home'),
 ]
