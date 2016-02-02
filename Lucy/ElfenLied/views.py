@@ -12,6 +12,6 @@ def accept_data(request):
         form = CalcParams(request.GET)
     else:
         form = CalcParams()
-    return render(request, 'home.html', {'form': form})
+    return render(request, 'lucyDJ/home.html', {"form": form})
 
 # Create your views here.
