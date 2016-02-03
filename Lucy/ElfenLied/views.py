@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from .models import *
 from .forms import *
 from numpy import random, sin, radians
+import sqlite3
 
 def accept_data(request):
     amplitude = 1.0
@@ -17,12 +18,13 @@ def accept_data(request):
     else:
         form = CalcParams()
 
-    if toclear == True:
+    if not toclear:
+        for j in range(0, 360, 1):
+            print('\r%s' % j, end='')
+            Point(abscissa=j, ordinate=amplitude *
+                    sin(radians(j)))
+    else:
         Point.objects.all().delete()
-
-    for j in range(0, 360, 20):
-        line = Point(abscissa=j, ordinate = amplitude * sin(radians(j)))
-        line.save()
 
     return render(request, 'lucyDJ/home.html',
             {"form": form,
