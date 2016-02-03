@@ -1,3 +1,4 @@
 *.png
 *.jp?g
 **/*.pyc
+db.sqlite3
