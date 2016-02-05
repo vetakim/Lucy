@@ -10,9 +10,3 @@ def gendi(amplitude, samples=360):
         }
             for j in range(samples)]
 
-def entry_db(funcreturn, modelname):
-    '''Заполнение БД при помощи модели modelname списком словарей funcreturn'''
-    for dictionary in funcreturn:
-        modelname(**dictionary).save()
-    return 0
-

@@ -3,40 +3,35 @@
 <h1> Беспорядочная куча мусора от работы модели</h1>
 
 <div class="buttonpanel">
+        {{ form.parameters.items }}
     <form action="" method="get">
-        <label for="id_amplitude" style="top: 10%"> Amplitude: </label>
-        {{ form.amplitude }}
-        <label for="id_samples" style="top: 15%"> Samples: </label>
-        {{ form.samples }}
-        <input type="submit" value="Apply" style="top: 20%">
-        {{ form.toclear}}
+        {% for field in form %}
+        <label style={'top': {{ forloop.counter|add:5 }}%}> {{ field.label }}</label>
+        {{ field }}
+        {% endfor %}
+        {{ form.toclear }}
+        {{ form.launch }}
     </form>
-    <button style="top: 45%" id="launch"> Launch </button>
-    <button style="top: 55%" id="show_graph"> Show graph</button>
-    <input style="top: 65%" id="request" type=number>
-    <button style="top: 70%"id="filter"> Filter </button>
 </div>
 
 <script>
 $(function () {
-var amp = {{ amplitude }}
-var te = "Amplitude = " + amp.toString();
     $('#container').highcharts({
         chart: {
             type: 'scatter',
             zoomType: 'xy'
         },
         title: {
-            text: te
+            text: 'TEST GRAPH'
         },
         xAxis: {
             title: {
-                text: 'phase'
+                text: 'ordinate'
             }
         },
         yAxis: {
             title: {
-                text: 'Values'
+                text: 'abscissa'
             }
         },
         plotOptions: {
