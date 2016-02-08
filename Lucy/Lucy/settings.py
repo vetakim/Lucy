@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'mathfilters',
-    'templatefilters.calcfilters',
     'ElfenLied',
+    'ElfenLied.templatetags.calcfilters',
 ]
 
 MIDDLEWARE_CLASSES = [

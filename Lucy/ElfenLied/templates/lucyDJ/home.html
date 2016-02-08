@@ -1,17 +1,39 @@
 {% extends "lucyDJ/base.html" %}
+{% load calcfilters %}
 {% block content %}
 <h1> Беспорядочная куча мусора от работы модели</h1>
 
 <div class="buttonpanel">
         {{ form.parameters.items }}
     <form action="" method="get">
-        {% for field in form %}
-        <label style={'top': {{ forloop.counter|add:5 }}%}> {{ field.label }}</label>
+        {% for field in form%}
+        <label style="top: {{ forloop.counter|mul:5 }}%"> {{ field.label }}</label>
         {{ field }}
         {% endfor %}
-        {{ form.toclear }}
-        {{ form.launch }}
     </form>
+</div>
+
+<p style="backgroud: #fa0000; top: 50%; left: 75%"> {{ graph_y }} </p>
+
+<div class="rubberblock" style="top: 53.75%">
+    <div class="rubberblock-inner">
+        <table>
+            <thead>
+                <tr>
+                    {% for key in lines|first %}
+                    <td> {{ key }} </td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            {% for line in lines %}
+            <tr>
+                {% for key, value in line.items %}
+                <td> {{ value }} </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
 </div>
 
 <script>
@@ -47,7 +69,7 @@ $(function () {
             name: 'Data pull',
             data:
                 [{% for line in lines %}
-            [{{ line.abscissa }}, {{ line.ordinate }}],
+            [{{ line.abscissa }}, {{ line.ordinate}}],
             {% endfor %}]
         }]
     });
@@ -55,28 +77,6 @@ $(function () {
 </script>
 
 <div id="container" class="rubberblock"> </div>
-
-<div class="rubberblock" style="top: 53.75%">
-    <div class="rubberblock-inner">
-        <table>
-            <thead>
-                <tr>
-                    {% for key in lines|first %}
-                    <td> {{ key }} </td>
-                    {% endfor %}
-                </tr>
-            </thead>
-            {% for line in lines %}
-            <tr>
-                {% for key, value in line.items %}
-                <td> {{ value }} </td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
-</div>
-
 
 {% endblock %}
 
