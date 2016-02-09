@@ -3,17 +3,21 @@
 {% block content %}
 <h1> Беспорядочная куча мусора от работы модели</h1>
 
-<div class="buttonpanel">
-        {{ form.parameters.items }}
-    <form action="" method="get">
+<form action="" method="get">
+    <div class="parameters">
         {% for field in form%}
-        <label style="top: {{ forloop.counter|mul:5 }}%"> {{ field.label }}</label>
         {{ field }}
+        <label style="top: {{ forloop.counter|mul:20|add:-10 }}%"> {{ field.label }}</label>
         {% endfor %}
-    </form>
-</div>
-
-<p style="backgroud: #fa0000; top: 50%; left: 75%"> {{ graph_y }} </p>
+    </div>
+    <div class="calcclear">
+        {% for field in cform%}
+        {{ field }}
+        <label style="top: {{ forloop.counter|mul:5 }}%"> {{ field.label }}</label>
+        {% endfor %}
+        <input type=submit style="top: 25%" value='Load data'> </input>
+    </div>
+</form>
 
 <div class="rubberblock" style="top: 53.75%">
     <div class="rubberblock-inner">
@@ -35,6 +39,7 @@
         </table>
     </div>
 </div>
+
 
 <script>
 $(function () {
@@ -68,8 +73,20 @@ $(function () {
         series: [{
             name: 'Data pull',
             data:
-                [{% for line in lines %}
-            [{{ line.abscissa }}, {{ line.ordinate}}],
+                [{% for line in lines|dictsort:"id"%}
+                    [
+                    {% for key, value in line.items %}
+                        {% if key == graph_x %}
+                            {{ value }}
+                        {% endif %}
+                    {% endfor %},
+
+                    {% for key, value in line.items %}
+                        {% if key == graph_y %}
+                            {{ value }}
+                        {% endif %}
+                    {% endfor %}
+                    ],
             {% endfor %}]
         }]
     });

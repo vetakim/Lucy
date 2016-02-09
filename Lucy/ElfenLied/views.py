@@ -5,6 +5,8 @@ from .forms import *
 from .digen import gendi
 from numpy import random, sin, radians, cos
 import sqlite3
+import sys
+from priority.scheduler import planner
 
 def entry_db(funcreturn, modelname):
     '''Заполнение БД при помощи модели modelname списком словарей funcreturn'''
@@ -12,35 +14,55 @@ def entry_db(funcreturn, modelname):
         modelname(**dictionary).save()
     return 0
 
+func = planner
+modelname = Requisitions
+paramform = ReqParams
+
 def accept_data(request):
-    parameters = { 'amplitude' : 1.0, 'samples' : 360 }
+    parameters = dict.fromkeys(
+            func.__code__.co_varnames[
+                :func.__code__.co_argcount])
+    print(parameters)
     toclear = False
     launch = False
-    graph_y = Point.CHOICES[0]
+    graph_y = modelname.CHOICES[0]
+    graph_x = modelname.CHOICES[1]
 
     if request.method == 'GET':
-        form = CalcParams(request.GET)
+        cform = CalcClear(request.GET)
+        form = paramform(request.GET)
 
         if form.is_valid():
             parameters = form.cleaned_data
-            toclear = parameters.pop('toclear')
-            launch = parameters.pop('launch')
-            graph_y = parameters.pop('choose_points')
         else:
             print('FORM NOT VALID')
+
+        if cform.is_valid():
+            toclear = cform.cleaned_data['toclear']
+            launch = cform.cleaned_data['launch']
+            graph_x = cform.cleaned_data['choose_x_points']
+            graph_y = cform.cleaned_data['choose_y_points']
+        else:
+            print('CFORM NOT VALID')
     else:
-        form = CalcParams()
+        form = paramform()
+        cform = CalcClear()
 
     if launch:
-        entry_db(gendi(**parameters), Point)
+        modelname.objects.all().delete()
+        entry_db(func(**parameters), modelname)
+        # form = paramform(parameters)
+        cform = CalcClear()
 
     if toclear:
-        Point.objects.all().delete()
-    print(graph_y)
+        modelname.objects.all().delete()
 
     return render(request, 'lucyDJ/home.html',
             {"form": form,
+             "cform": cform,
              "graph_y": graph_y,
-             "lines": Point.objects.values()})
+             "graph_x": graph_x,
+             "lines": modelname.objects.values()})
 
 # Create your views here.
+
