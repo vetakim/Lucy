@@ -7,7 +7,7 @@
     <div class="parameters">
         {% for field in form%}
         {{ field }}
-        <label style="top: {{ forloop.counter|mul:20|add:-10 }}%"> {{ field.label }}</label>
+        <label style="top: {{ forloop.counter|mul:10|add:-5 }}%"> {{ field.label }}</label>
         {% endfor %}
     </div>
     <div class="calcclear">
@@ -15,11 +15,11 @@
         {{ field }}
         <label style="top: {{ forloop.counter|mul:5 }}%"> {{ field.label }}</label>
         {% endfor %}
-        <input type=submit style="top: 25%" value='Load data'> </input>
+        <input type=submit class=ccinput style="top: 25%" value='Load data'> </input>
     </div>
 </form>
 
-<div class="rubberblock" style="top: 53.75%">
+<div class="rubberblock" style="top: 54.75%">
     <div class="rubberblock-inner">
         <table>
             <thead>
@@ -49,16 +49,16 @@ $(function () {
             zoomType: 'xy'
         },
         title: {
-            text: 'TEST GRAPH'
+            text: 'XY GRAPH'
         },
         xAxis: {
             title: {
-                text: 'ordinate'
+                text: "{{ graph_x }}"
             }
         },
         yAxis: {
             title: {
-                text: 'abscissa'
+                text: "{{ graph_y }}"
             }
         },
         plotOptions: {
@@ -73,7 +73,7 @@ $(function () {
         series: [{
             name: 'Data pull',
             data:
-                [{% for line in lines|dictsort:"id"%}
+                [{% for line in lines|dictsort:graph_x %}
                     [
                     {% for key, value in line.items %}
                         {% if key == graph_x %}

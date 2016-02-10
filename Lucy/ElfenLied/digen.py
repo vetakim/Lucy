@@ -1,7 +1,7 @@
 from numpy import radians, cos
 from numpy.random import uniform
 
-def gendi(amplitude, samples=360):
+def gendi(amplitude=1, samples=360):
     n = amplitude / 10 ** (13 / 20)
     return [{
         'abscissa': j,

@@ -10,19 +10,22 @@ from priority.scheduler import planner
 
 def entry_db(funcreturn, modelname):
     '''Заполнение БД при помощи модели modelname списком словарей funcreturn'''
+    print(len(funcreturn))
     for dictionary in funcreturn:
         modelname(**dictionary).save()
     return 0
 
 func = planner
-modelname = Requisitions
+modelname = RequisitionModel
 paramform = ReqParams
 
 def accept_data(request):
-    parameters = dict.fromkeys(
-            func.__code__.co_varnames[
-                :func.__code__.co_argcount])
-    print(parameters)
+
+    parameters = dict(
+            zip(
+                func.__code__.co_varnames, func.__defaults__
+                )
+                    )
     toclear = False
     launch = False
     graph_y = modelname.CHOICES[0]
@@ -34,16 +37,16 @@ def accept_data(request):
 
         if form.is_valid():
             parameters = form.cleaned_data
+            graph_x = form.cleaned_data.pop('choose_x_points')
+            graph_y = form.cleaned_data.pop('choose_y_points')
         else:
-            print('FORM NOT VALID')
+            print('PARAMETERS FORM NOT VALID:\n%s' % form.errors)
 
         if cform.is_valid():
             toclear = cform.cleaned_data['toclear']
             launch = cform.cleaned_data['launch']
-            graph_x = cform.cleaned_data['choose_x_points']
-            graph_y = cform.cleaned_data['choose_y_points']
         else:
-            print('CFORM NOT VALID')
+            print('MANAGEMENT FORM NOT VALID')
     else:
         form = paramform()
         cform = CalcClear()
@@ -51,7 +54,6 @@ def accept_data(request):
     if launch:
         modelname.objects.all().delete()
         entry_db(func(**parameters), modelname)
-        # form = paramform(parameters)
         cform = CalcClear()
 
     if toclear:
