@@ -6,7 +6,7 @@
 <form action="" method="get">
     <div class="parameters">
         {% for field in form%}
-        {{ field }}
+        {{ field.as_div }}
         <label style="top: {{ forloop.counter|mul:10|add:-5 }}%"> {{ field.label }}</label>
         {% endfor %}
     </div>

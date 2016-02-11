@@ -13,6 +13,11 @@ class Point(models.Model):
 # Create your models here.
 
 class RequisitionModel(models.Model):
+    maxtact = models.FloatField()
+    free_resource = models.FloatField()
+    medium = models.FloatField()
+    dispersion = models.FloatField()
+    lawstring = models.CharField(max_length=255)
 
     arrival_time = models.FloatField()
     start_time = models.FloatField()
