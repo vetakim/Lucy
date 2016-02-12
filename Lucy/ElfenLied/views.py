@@ -10,26 +10,24 @@ from priority.scheduler import planner
 
 def entry_db(funcreturn, modelname):
     '''Заполнение БД при помощи модели modelname списком словарей funcreturn'''
-    print(len(funcreturn))
     for dictionary in funcreturn:
         modelname(**dictionary).save()
     return 0
 
 func = planner
-modelname = RequisitionModel
-paramform = ReqParams
+modelname = RequisitionOutput
+paramform = Input
 
 def accept_data(request):
 
-    parameters = dict(
-            zip(
+    parameters = dict(zip(
                 func.__code__.co_varnames, func.__defaults__
-                )
-                    )
+                ))
+
     toclear = False
     launch = False
-    graph_y = modelname.CHOICES[0]
-    graph_x = modelname.CHOICES[1]
+    graph_x = modelname.CHOICES[0][0]
+    graph_y = modelname.CHOICES[1][0]
 
     if request.method == 'GET':
         cform = CalcClear(request.GET)
@@ -37,14 +35,14 @@ def accept_data(request):
 
         if form.is_valid():
             parameters = form.cleaned_data
-            graph_x = form.cleaned_data.pop('choose_x_points')
-            graph_y = form.cleaned_data.pop('choose_y_points')
         else:
             print('PARAMETERS FORM NOT VALID:\n%s' % form.errors)
 
         if cform.is_valid():
             toclear = cform.cleaned_data['toclear']
             launch = cform.cleaned_data['launch']
+            graph_x = cform.cleaned_data['choose_x_points']
+            graph_y = cform.cleaned_data['choose_y_points']
         else:
             print('MANAGEMENT FORM NOT VALID')
     else:
@@ -58,6 +56,7 @@ def accept_data(request):
 
     if toclear:
         modelname.objects.all().delete()
+    print(parameters)
 
     return render(request, 'lucyDJ/home.html',
             {"form": form,

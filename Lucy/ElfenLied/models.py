@@ -1,4 +1,5 @@
 from django.db import models
+from priority.scheduler import laws
 
 class Point(models.Model):
     abscissa = models.FloatField()
@@ -12,13 +13,17 @@ class Point(models.Model):
 
 # Create your models here.
 
-class RequisitionModel(models.Model):
+class RequisitionInput(models.Model):
+    IN_CHOICES = tuple((j, j) for j in laws)
     maxtact = models.FloatField()
     free_resource = models.FloatField()
     medium = models.FloatField()
     dispersion = models.FloatField()
-    lawstring = models.CharField(max_length=255)
+    lawstring = models.CharField(max_length=255,
+            choices = IN_CHOICES,
+            default = IN_CHOICES[0][0])
 
+class RequisitionOutput(models.Model):
     arrival_time = models.FloatField()
     start_time = models.FloatField()
     lifetime = models.FloatField()
@@ -42,7 +47,7 @@ class RequisitionModel(models.Model):
             ('duration', 'Duration'),
             ('action', 'Action'),
             ('object_type', 'Object'),
-            ('distance ', 'Distance'),
+            ('distance', 'Distance'),
             ('azimuth', 'Azimuth'),
             ('row', 'Row'),
             ('tact', 'Tact'),
