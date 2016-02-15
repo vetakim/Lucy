@@ -17,6 +17,7 @@ def entry_db(funcreturn, modelname):
 func = planner
 modelname = RequisitionOutput
 paramform = Input
+outform = Output
 
 def accept_data(request):
 
@@ -24,13 +25,16 @@ def accept_data(request):
                 func.__code__.co_varnames, func.__defaults__
                 ))
 
+    calcfuncname = func.__name__
     toclear = False
     launch = False
     graph_x = modelname.CHOICES[0][0]
     graph_y = modelname.CHOICES[1][0]
+    calcout = {}
 
     if request.method == 'GET':
         cform = CalcClear(request.GET)
+        oform = outform(request.GET)
         form = paramform(request.GET)
 
         if form.is_valid():
@@ -45,9 +49,14 @@ def accept_data(request):
             graph_y = cform.cleaned_data['choose_y_points']
         else:
             print('MANAGEMENT FORM NOT VALID')
+        if oform.is_valid():
+            calcout = oform.cleaned_data
+        else:
+            print('OUTPUT FORM NOT VALID')
     else:
         form = paramform()
         cform = CalcClear()
+        oform = outform()
 
     if launch:
         modelname.objects.all().delete()
@@ -60,7 +69,10 @@ def accept_data(request):
 
     return render(request, 'lucyDJ/home.html',
             {"form": form,
+             "funcname": calcfuncname,
              "cform": cform,
+             "oform": oform,
+             "calcout": calcout,
              "graph_y": graph_y,
              "graph_x": graph_x,
              "lines": modelname.objects.values()})

@@ -1,7 +1,8 @@
 {% extends "lucyDJ/base.html" %}
 {% load calcfilters %}
+{% load staticfiles %}
 {% block content %}
-<h1> Беспорядочная куча мусора от работы модели</h1>
+<h1> Calculation results for function {{ funcname }} </h1>
 
 <form action="" method="get">
 
@@ -34,15 +35,29 @@
         <table>
             <thead>
                 <tr>
-                    {% for key in lines|first %}
-                    <td> {{ key }} </td>
+                    {% for field in oform %}
+                    <td>
+                        {{ field.name }}
+                    </td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <thead>
+                <tr>
+                    {% for field in oform %}
+                    <td>
+                        {{ field }}
+                    </td>
                     {% endfor %}
                 </tr>
             </thead>
             {% for line in lines %}
             <tr>
-                {% for key, value in line.items %}
-                <td> {{ value }} </td>
+
+                {% for field in oform %}
+                <td>
+                    {{ line|get:field.name}}
+                </td>
                 {% endfor %}
             </tr>
             {% endfor %}
@@ -50,60 +65,9 @@
     </div>
 </div>
 
-
-<script>
-$(function () {
-    $('#container').highcharts({
-        chart: {
-            type: 'scatter',
-            zoomType: 'xy'
-        },
-        title: {
-            text: 'XY GRAPH'
-        },
-        xAxis: {
-            title: {
-                text: "{{ graph_x }}"
-            }
-        },
-        yAxis: {
-            title: {
-                text: "{{ graph_y }}"
-            }
-        },
-        plotOptions: {
-            scatter: {
-                marker: {
-                    radius: 1.0
-                },
-                color: '#fa0000',
-                lineWidth: 0.5
-            }
-        },
-        series: [{
-            name: 'Data pull',
-            data:
-                [{% for line in lines|dictsort:graph_x %}
-                    [
-                    {% for key, value in line.items %}
-                        {% if key == graph_x %}
-                            {{ value }}
-                        {% endif %}
-                    {% endfor %},
-
-                    {% for key, value in line.items %}
-                        {% if key == graph_y %}
-                            {{ value }}
-                        {% endif %}
-                    {% endfor %}
-                    ],
-            {% endfor %}]
-        }]
-    });
-});
-</script>
-
-<div id="container" class="rubberblock"> </div>
+<div id='container' class="rubberblock">
+</div>
+<!--<script src="{% static "js/XYchart.js" %}></script>-->
 
 {% endblock %}
 

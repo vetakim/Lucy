@@ -28,13 +28,14 @@ class RequisitionOutput(models.Model):
     start_time = models.FloatField()
     lifetime = models.FloatField()
     duration = models.FloatField()
-    action = models.TextField()
-    object_type = models.TextField()
+    action = models.CharField(max_length=255)
+    object_type = models.CharField(max_length=255)
     distance = models.FloatField()
     azimuth = models.FloatField()
     row = models.FloatField()
     tact = models.FloatField()
     num = models.IntegerField()
+    numinbarrier = models.IntegerField()
     precedence = models.FloatField()
     catastrophe = models.BooleanField()
 
@@ -52,5 +53,6 @@ class RequisitionOutput(models.Model):
             ('row', 'Row'),
             ('tact', 'Tact'),
             ('num', 'number'),
+            ('numinbarrier', 'numinbarrier'),
             )
 

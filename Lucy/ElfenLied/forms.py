@@ -20,12 +20,10 @@ class CalcClear(forms.Form):
             required=False,
             label='x-axis',
             choices=modeloutput.CHOICES)
-            # # , widget=forms.Select(attrs={'style': 'top: 55%'}))
 
     choose_y_points = ChoiceField(required=False,
             label='y-axis',
             choices=modeloutput.CHOICES)
-            # # , widget=forms.Select(attrs={'style': 'top: 65%'}))
 
 class PointParams(forms.Form):
     amplitude = FloatField(label="Amplitude",
