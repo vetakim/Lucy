@@ -56,3 +56,4 @@ class Output(forms.ModelForm):
         model = modeloutput
         fields = column(modeloutput.CHOICES)
 
+

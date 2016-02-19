@@ -35,24 +35,26 @@ class RequisitionOutput(models.Model):
     row = models.FloatField()
     tact = models.FloatField()
     num = models.IntegerField()
-    numinbarrier = models.IntegerField()
+    direction = models.IntegerField()
+    tfirst = models.FloatField()
     precedence = models.FloatField()
     catastrophe = models.BooleanField()
 
     CHOICES = (
+            ('num', 'number'),
+            ('action', 'Action'),
+            ('object_type', 'Object'),
             ('arrival_time', 'Arrival time'),
             ('start_time', 'Start time'),
             ('lifetime', 'Lifetime'),
+            ('duration', 'Duration'),
             ('precedence', 'Precedence'),
             ('catastrophe', 'Catastrophe'),
-            ('duration', 'Duration'),
-            ('action', 'Action'),
-            ('object_type', 'Object'),
+            ('direction', 'direction'),
+            ('tfirst', 'Tfirst'),
             ('distance', 'Distance'),
             ('azimuth', 'Azimuth'),
             ('row', 'Row'),
             ('tact', 'Tact'),
-            ('num', 'number'),
-            ('numinbarrier', 'numinbarrier'),
             )
 
