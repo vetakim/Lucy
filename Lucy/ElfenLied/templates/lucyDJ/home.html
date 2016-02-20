@@ -9,22 +9,38 @@
     <div class="parameters">
 
         {% for field in form%}
-        <div class="parameter">
+        <div class="labelofpar">
             {{ field.label_tag }}
+        </div>
+        <div class="parameter">
             {{ field }}
         </div>
+        <div class="filler">
+        </div>
+
         {% endfor %}
 
         {% for field in cform%}
-        <div class="parameter">
-            {{ field.label_tag }}
-            {{ field }}
-        </div>
-        {% endfor %}
+        {% if forloop.counter == 2 %}
 
         <div class="parameter">
             <input type=submit value='Load data'> </input>
         </div>
+        <div class="filler">
+        </div>
+        {% endif %}
+
+        <div class="labelofpar">
+            {{ field.label_tag }}
+        </div>
+        <div class="parameter">
+            {{ field }}
+        </div>
+        <div class="filler">
+        </div>
+
+        {% endfor %}
+
 
     </div>
 
