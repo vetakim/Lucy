@@ -25,6 +25,15 @@ class CalcClear(forms.Form):
             label='y-axis',
             choices=modeloutput.CHOICES)
 
+    choose_type = ChoiceField(required=False,
+            label='Graph type',
+            choices=(
+                ('scatter', 'scatter'),
+                ('pie', 'pie')
+                )
+            )
+
+
 class PointParams(forms.Form):
     amplitude = FloatField(label="Amplitude",
             widget=forms.TextInput(attrs={'type':

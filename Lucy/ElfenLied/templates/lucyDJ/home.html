@@ -80,10 +80,76 @@
         </table>
     </div>
 </div>
+<script>
+$(function () {
+    $('#container').highcharts({
+        chart: {
+            type: "{{ graph_type }}",
+            zoomType: 'xy'
+        },
+        title: {
+            text: ' {{ graph_type }}: {{ graph_y }} of {{ graph_x }}'
+        },
+        xAxis: {
+            title: {
+                text: "{{ graph_x }}"
+            }
+        },
+        yAxis: {
+            title: {
+                text: " {{ graph_y }}"
+            }
+        },
+        plotOptions: {
+            scatter: {
+                marker: {
+                    radius: 1.0
+                },
+                color: '#fa0000',
+                lineWidth: 0.5
+            }
+        },
+        series: [{
+            name: 'Data pull',
+            data:
+                [
+                {% if graph_type == "scatter" %}
+            {% for line in lines %}
+            [
+            {% for key, value in line.items %}
+            {% if key == graph_x %}
+            {{ value }}
+            {% endif %}
+            {% endfor %},
+
+            {% for key, value in line.items %}
+            {% if key == graph_y %}
+            {{ value }}
+            {% endif %}
+            {% endfor %}
+            ],
+            {% endfor %}
+            {% endif %}
+
+            {% if graph_type == "pie" %}
+            {% for line in lines %}
+            {% for key, value in line.items %}
+            {
+            {% if key == graph_y %}
+            name: "{{ graph_y }},
+            y: {{ graph_y }} ,
+            {% endif %}
+            }
+            {% endfor %}
+            {% endfor %}
+            {% endif %}]
+
+        }]
+    });
+});
+</script>
 
 <div id='container' class="rubberblock">
 </div>
-<!--<script src="{% static "js/XYchart.js" %}></script>-->
-
 {% endblock %}
 

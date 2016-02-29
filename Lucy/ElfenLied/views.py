@@ -30,6 +30,7 @@ def accept_data(request):
     launch = False
     graph_x = modelname.CHOICES[0][0]
     graph_y = modelname.CHOICES[1][0]
+    graph_type = 'scatter'
     calcout = {}
 
     if request.method == 'GET':
@@ -47,6 +48,7 @@ def accept_data(request):
             launch = cform.cleaned_data['launch']
             graph_x = cform.cleaned_data['choose_x_points']
             graph_y = cform.cleaned_data['choose_y_points']
+            graph_type = cform.cleaned_data['choose_type']
         else:
             print('MANAGEMENT FORM NOT VALID')
         if oform.is_valid():
@@ -75,6 +77,7 @@ def accept_data(request):
              "calcout": calcout,
              "graph_y": graph_y,
              "graph_x": graph_x,
+             "graph_type": graph_type,
              "lines": modelname.objects.values()})
 
 # Create your views here.
