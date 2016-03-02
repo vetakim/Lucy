@@ -12,3 +12,5 @@ def get(value, arg):
     '''getting value from dict'''
     return value.__getitem__(arg)
 
+# def categorized(list_, key):
+    

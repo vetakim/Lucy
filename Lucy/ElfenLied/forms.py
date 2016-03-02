@@ -16,22 +16,22 @@ class CalcClear(forms.Form):
             widget=forms.TextInput(attrs={
                 'type': 'submit', 'value': 'Clear DB' }))
 
-    choose_x_points = ChoiceField(
-            required=False,
-            label='x-axis',
-            choices=modeloutput.CHOICES)
+    # choose_x_points = ChoiceField(
+            # required=False,
+            # label='x-axis',
+            # choices=modeloutput.CHOICES)
 
-    choose_y_points = ChoiceField(required=False,
-            label='y-axis',
-            choices=modeloutput.CHOICES)
+    # choose_y_points = ChoiceField(required=False,
+            # label='y-axis',
+            # choices=modeloutput.CHOICES)
 
-    choose_type = ChoiceField(required=False,
-            label='Graph type',
-            choices=(
-                ('scatter', 'scatter'),
-                ('pie', 'pie')
-                )
-            )
+    # choose_type = ChoiceField(required=False,
+            # label='Graph type',
+            # choices=(
+                # ('scatter', 'scatter'),
+                # ('pie', 'pie')
+                # )
+            # )
 
 
 class PointParams(forms.Form):
@@ -64,5 +64,13 @@ class Output(forms.ModelForm):
     class Meta:
         model = modeloutput
         fields = column(modeloutput.CHOICES)
+
+class Graph(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ModelForm, self).__init__(*args, **kwargs)
+
+    class Meta:
+        model = Graph
+        fields = ('graph_x', 'graph_y', 'graph_type')
 
 

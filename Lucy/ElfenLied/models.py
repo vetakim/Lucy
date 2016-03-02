@@ -1,5 +1,5 @@
 from django.db import models
-from priority.scheduler import laws
+from priority.scheduler import laws, planner
 
 class Point(models.Model):
     abscissa = models.FloatField()
@@ -58,3 +58,19 @@ class RequisitionOutput(models.Model):
             ('tact', 'Tact'),
             )
 
+modeloutput = RequisitionOutput
+modelinput = RequisitionInput
+calcfunc = planner
+
+class Graph(models.Model):
+    graph_x = models.CharField(max_length=255,
+            choices = modeloutput.CHOICES,
+            default = modeloutput.CHOICES[0][0])
+    graph_y = models.CharField(max_length=255,
+            choices = modeloutput.CHOICES,
+            default = modeloutput.CHOICES[1][1])
+    graph_type = models.CharField(max_length=255,
+            choices = (
+                ('scatter', 'XY Scatter'),
+                ('pie', 'Pie Chart'),
+                ))

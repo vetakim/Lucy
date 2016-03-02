@@ -9,40 +9,66 @@
     <div class="parameters">
 
         {% for field in form%}
-        <div class="labelofpar">
-            {{ field.label_tag }}
-        </div>
-        <div class="parameter">
-            {{ field }}
-        </div>
-        <div class="filler">
-        </div>
+
+            <div class="labelofpar">
+                {{ field.label_tag }}
+            </div>
+
+            <div class="parameter">
+                {{ field }}
+            </div>
+
+            <div class="filler"> </div>
 
         {% endfor %}
 
         {% for field in cform%}
-        {% if forloop.counter == 2 %}
 
-        <div class="parameter">
-            <input type=submit value='Load data'> </input>
-        </div>
-        <div class="filler">
-        </div>
-        {% endif %}
+            {% if forloop.counter == 2 %}
 
-        <div class="labelofpar">
-            {{ field.label_tag }}
-        </div>
-        <div class="parameter">
-            {{ field }}
-        </div>
-        <div class="filler">
-        </div>
+                <div class="parameter">
+                    <input type=submit value='Load data'> </input>
+                </div>
+
+                <div class="filler"> </div>
+
+            {% endif %}
+
+            <div class="labelofpar">
+                {{ field.label_tag }}
+            </div>
+
+            <div class="parameter">
+                {{ field }}
+            </div>
+
+            <div class="filler"> </div>
 
         {% endfor %}
 
+        {% for field in gform%}
+
+            <div class="labelofpar">
+                {{ field.label_tag }}
+            </div>
+
+            <div class="parameter">
+                {{ field }}
+            </div>
+
+            <div class="filler"> </div>
+
+        {% endfor %}
 
     </div>
+
+<div class="tests">
+
+        {% for line in lines%}
+        {{ line.row }}
+        {% endfor %}
+
+</div>
 
 </form>
 
@@ -114,35 +140,23 @@ $(function () {
             data:
                 [
                 {% if graph_type == "scatter" %}
-            {% for line in lines %}
-            [
-            {% for key, value in line.items %}
-            {% if key == graph_x %}
-            {{ value }}
-            {% endif %}
-            {% endfor %},
+                    {% for line in lines %}
+                        [
+                        {{ line | get:graph_x }},
+                        {{ line | get:graph_y }}
+                        ],
+                    {% endfor %}
+                {% endif %}
 
-            {% for key, value in line.items %}
-            {% if key == graph_y %}
-            {{ value }}
-            {% endif %}
-            {% endfor %}
-            ],
-            {% endfor %}
-            {% endif %}
-
-            {% if graph_type == "pie" %}
-            {% for line in lines %}
-            {% for key, value in line.items %}
-            {
-            {% if key == graph_y %}
-            name: "{{ graph_y }},
-            y: {{ graph_y }} ,
-            {% endif %}
-            }
-            {% endfor %}
-            {% endfor %}
-            {% endif %}]
+                {% if graph_type == "pie" %}
+                {% regroup lines|dictsort:graph_y by distance as apple_pie %}
+                    {% for piece in apple_pie %}
+                    { name: "{{ piece.grouper }}",
+                         y: {{ piece.list|length }}
+                    },
+                    {% endfor %}
+                {% endif %}
+                ]
 
         }]
     });

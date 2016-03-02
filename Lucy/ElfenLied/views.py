@@ -35,6 +35,7 @@ def accept_data(request):
 
     if request.method == 'GET':
         cform = CalcClear(request.GET)
+        gform = Graph(request.GET)
         oform = outform(request.GET)
         form = paramform(request.GET)
 
@@ -42,13 +43,16 @@ def accept_data(request):
             parameters = form.cleaned_data
         else:
             print('PARAMETERS FORM NOT VALID:\n%s' % form.errors)
+        if gform.is_valid():
+            graph_x = gform.cleaned_data['graph_x']
+            graph_y = gform.cleaned_data['graph_y']
+            graph_type = gform.cleaned_data['graph_type']
+        else:
+            print('GRAPH FORM NOT VALID')
 
         if cform.is_valid():
             toclear = cform.cleaned_data['toclear']
             launch = cform.cleaned_data['launch']
-            graph_x = cform.cleaned_data['choose_x_points']
-            graph_y = cform.cleaned_data['choose_y_points']
-            graph_type = cform.cleaned_data['choose_type']
         else:
             print('MANAGEMENT FORM NOT VALID')
         if oform.is_valid():
@@ -59,21 +63,24 @@ def accept_data(request):
         form = paramform()
         cform = CalcClear()
         oform = outform()
+        gform = Graph()
 
     if launch:
+        print(launch)
         modelname.objects.all().delete()
         entry_db(func(**parameters), modelname)
         cform = CalcClear()
 
     if toclear:
+        print(toclear)
         modelname.objects.all().delete()
-    print(parameters)
 
     return render(request, 'lucyDJ/home.html',
             {"form": form,
              "funcname": calcfuncname,
              "cform": cform,
              "oform": oform,
+             "gform": gform,
              "calcout": calcout,
              "graph_y": graph_y,
              "graph_x": graph_x,
