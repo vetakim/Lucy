@@ -133,6 +133,14 @@ $(function () {
                 },
                 color: '#fa0000',
                 lineWidth: 0.5
+            },
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.name} - {point.y} ({point.percentage:.1f} %)',
+                }
             }
         },
         series: [{
