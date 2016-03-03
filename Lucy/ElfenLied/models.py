@@ -37,11 +37,13 @@ class RequisitionOutput(models.Model):
     num = models.IntegerField()
     direction = models.IntegerField()
     tfirst = models.FloatField()
+    cb = models.FloatField()
     precedence = models.FloatField()
     catastrophe = models.BooleanField()
 
     CHOICES = (
             ('num', 'number'),
+            ('cb', 'cb'),
             ('action', 'Action'),
             ('object_type', 'Object'),
             ('arrival_time', 'Arrival time'),
