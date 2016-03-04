@@ -64,8 +64,8 @@
 
 <div class="tests">
 
-        {% for line in lines%}
-        {{ line.row }}
+        {% for line in lines|categorized:graph_x %}
+        <ul> {{ line|get:0 }}: {{line| get:1}} </ul>
         {% endfor %}
 
 </div>
@@ -157,10 +157,10 @@ $(function () {
                 {% endif %}
 
                 {% if graph_type == "pie" %}
-                {% regroup lines|dictsort:graph_y by distance as apple_pie %}
-                    {% for piece in apple_pie %}
-                    { name: "{{ piece.grouper }}",
-                         y: {{ piece.list|length }}
+
+                {% for line in lines|categorized:graph_y %}
+                    { name: "{{ line| get:0 }}",
+                        y: {{ line|get:1 }}
                     },
                     {% endfor %}
                 {% endif %}
