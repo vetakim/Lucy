@@ -30,8 +30,10 @@ def accept_data(request):
     launch = False
     graph_x = modelname.CHOICES[0][0]
     graph_y = modelname.CHOICES[1][0]
+    category = modelname.CHOICES[1][0]
     graph_type = 'scatter'
     calcout = {}
+    lines = modelname.objects.values()
 
     if request.method == 'GET':
         cform = CalcClear(request.GET)
@@ -43,9 +45,11 @@ def accept_data(request):
             parameters = form.cleaned_data
         else:
             print('PARAMETERS FORM NOT VALID:\n%s' % form.errors)
+
         if gform.is_valid():
             graph_x = gform.cleaned_data['graph_x']
             graph_y = gform.cleaned_data['graph_y']
+            category = gform.cleaned_data['category']
             graph_type = gform.cleaned_data['graph_type']
         else:
             print('GRAPH FORM NOT VALID')
@@ -55,8 +59,10 @@ def accept_data(request):
             launch = cform.cleaned_data['launch']
         else:
             print('MANAGEMENT FORM NOT VALID')
+
         if oform.is_valid():
             calcout = oform.cleaned_data
+            print(calcout)
         else:
             print('OUTPUT FORM NOT VALID')
     else:
@@ -66,15 +72,16 @@ def accept_data(request):
         gform = Graph()
 
     if launch:
-        print(launch)
         modelname.objects.all().delete()
         entry_db(func(**parameters), modelname)
+        lines = modelname.objects.values()
+        # xylines = lines.filter(category
         cform = CalcClear()
 
     if toclear:
-        print(toclear)
         modelname.objects.all().delete()
 
+    # lines = lines.filter(distance=1)
     return render(request, 'lucyDJ/home.html',
             {"form": form,
              "funcname": calcfuncname,
@@ -84,8 +91,9 @@ def accept_data(request):
              "calcout": calcout,
              "graph_y": graph_y,
              "graph_x": graph_x,
+             "category": category,
              "graph_type": graph_type,
-             "lines": modelname.objects.values()})
+             "lines": lines})
 
 # Create your views here.
 

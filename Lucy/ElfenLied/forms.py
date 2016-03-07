@@ -16,23 +16,6 @@ class CalcClear(forms.Form):
             widget=forms.TextInput(attrs={
                 'type': 'submit', 'value': 'Clear DB' }))
 
-    # choose_x_points = ChoiceField(
-            # required=False,
-            # label='x-axis',
-            # choices=modeloutput.CHOICES)
-
-    # choose_y_points = ChoiceField(required=False,
-            # label='y-axis',
-            # choices=modeloutput.CHOICES)
-
-    # choose_type = ChoiceField(required=False,
-            # label='Graph type',
-            # choices=(
-                # ('scatter', 'scatter'),
-                # ('pie', 'pie')
-                # )
-            # )
-
 
 class PointParams(forms.Form):
     amplitude = FloatField(label="Amplitude",
@@ -71,6 +54,6 @@ class Graph(forms.ModelForm):
 
     class Meta:
         model = Graph
-        fields = ('graph_x', 'graph_y', 'graph_type')
+        fields = ('graph_x', 'graph_y', 'category', 'graph_type')
 
 

@@ -13,9 +13,20 @@ def get(value, arg):
     '''getting value from dict'''
     return value.__getitem__(arg)
 
-@register.filter(name='categorized')
-def categorized(list_, key):
+@register.filter(name='pieces')
+def pieces(list_, key):
+    '''getting sum of list_'s elements with same key'''
     c = Counter()
     for j in list_:
         c[j[key]] += 1
-    return list(zip(c.keys(), c.values()))
+    return c.most_common()
+
+@register.filter(name='categorized')
+def categorized(list_, key):
+    '''getting sublist of list_ with same key'''
+    c = pieces(list_, key)
+    return [(i, [k for k in list_ if k[key] == i]) for i, j in c]
+
+
+
+

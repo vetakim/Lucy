@@ -71,6 +71,9 @@ class Graph(models.Model):
     graph_y = models.CharField(max_length=255,
             choices = modeloutput.CHOICES,
             default = modeloutput.CHOICES[1][1])
+    category = models.CharField(max_length=255,
+            choices = modeloutput.CHOICES,
+            default = modeloutput.CHOICES[0][0])
     graph_type = models.CharField(max_length=255,
             choices = (
                 ('scatter', 'XY Scatter'),
