@@ -8,6 +8,27 @@ import sqlite3
 import sys
 from priority.scheduler import planner
 
+import sys
+from django.http import HttpResponse
+
+def print_http_response(f):
+    """ Wraps a python function that prints to the console, and returns
+    those results as a HttpResponse (HTML)"""
+
+    class WritableObject:
+        def __init__(self):
+            self.content = []
+        def write(self, string):
+            self.content.append(string)
+
+    def new_f(*args, **kwargs):
+        printed = WritableObject()
+        sys.stdout = printed
+        f(*args, **kwargs)
+        sys.stdout = sys.__stdout__
+        return HttpResponse(['<BR>' if c == '\n' else c for c in printed.content])
+    return new_f
+
 def entry_db(funcreturn, modelname):
     '''Заполнение БД при помощи модели modelname списком словарей funcreturn'''
     for dictionary in funcreturn:
@@ -19,6 +40,7 @@ modelname = RequisitionOutput
 paramform = Input
 outform = Output
 
+# @print_http_response
 def accept_data(request):
 
     parameters = dict(zip(
@@ -62,7 +84,6 @@ def accept_data(request):
 
         if oform.is_valid():
             calcout = oform.cleaned_data
-            print(calcout)
         else:
             print('OUTPUT FORM NOT VALID')
     else:
@@ -70,6 +91,7 @@ def accept_data(request):
         cform = CalcClear()
         oform = outform()
         gform = Graph()
+    print(calcout)
 
     if launch:
         modelname.objects.all().delete()

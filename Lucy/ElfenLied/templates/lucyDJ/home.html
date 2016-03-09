@@ -3,114 +3,39 @@
 {% load staticfiles %}
 {% block content %}
 <h1> Calculation results for function {{ funcname }} </h1>
-
-<form action="" method="get">
-
-    <div class="parameters">
-
-        {% for field in form%}
-
-            <div class="labelofpar">
-                {{ field.label_tag }}
-            </div>
-
-            <div class="parameter">
-                {{ field }}
-            </div>
-
-            <div class="filler"> </div>
-
+<div class="allspace">
+<div class="leftspace">
+    <div class="tests" id="testdiv">
+        {% for field in gform %}
+        <ul> {{ field.label }} </ul>
         {% endfor %}
-
-        {% for field in cform%}
-
-            {% if forloop.counter == 2 %}
-
-                <div class="parameter">
-                    <input type=submit value='Load data'> </input>
-                </div>
-
-                <div class="filler"> </div>
-
-            {% endif %}
-
-            <div class="labelofpar">
-                {{ field.label_tag }}
-            </div>
-
-            <div class="parameter">
-                {{ field }}
-            </div>
-
-            <div class="filler"> </div>
-
-        {% endfor %}
-
-        {% for field in gform%}
-
-            <div class="labelofpar">
-                {{ field.label_tag }}
-            </div>
-
-            <div class="parameter">
-                {{ field }}
-            </div>
-
-            <div class="filler"> </div>
-
-        {% endfor %}
-
     </div>
-
-<div class="tests">
-    {% for field in gform %}
-    <ul> {{ field.label }} </ul>
-    {% endfor %}
 </div>
+
+
+
 
 </form>
 
-<div class="rubberblock" style="top: 54.75%">
-    <div class="rubberblock-inner">
-        <table>
-            <thead>
-                <tr>
-                    {% for field in oform %}
-                    <td>
-                        {{ field.name }}
-                    </td>
-                    {% endfor %}
-                </tr>
-            </thead>
-            <thead>
-                <tr>
-                    {% for field in oform %}
-                    <td>
-                        {{ field }}
-                    </td>
-                    {% endfor %}
-                </tr>
-            </thead>
-            {% for line in lines %}
-            <tr>
-
-                {% for field in oform %}
-                <td>
-                    {{ line|get:field.name}}
-                </td>
-                {% endfor %}
-            </tr>
-            {% endfor %}
-        </table>
-    </div>
-</div>
 
 <script>
 $(function () {
-    $('#container').highcharts({
+
+    var $container = $('#container'),
+    chart,
+    origChartWidth = 800,
+    origChartHeight = 700,
+    chartWidth = origChartWidth,
+    chartHeight = origChartHeight;
+
+    $container.highcharts({
         chart: {
             type: "{{ graph_type }}",
-            zoomType: 'xy'
+            zoomType: 'xy',
+            spacingTop: 0,
+            spacingBottom: 5,
+            spacingLeft: 5,
+            spacingRight: 5,
         },
         xAxis: {
             title: {
@@ -184,7 +109,136 @@ $(function () {
 </script>
 
 <div class="rubberblock">
-    <div id = 'container' class="rubberblock-inner"> </div>
+<div class="rubberfill">
+    <img class="knopamin" id="graphmin" src="{% static "minimize.png" %}"/>
+    <img class="knopamax" id="graphmax" src="{% static "maximize.png" %}"/>
 </div>
+<div id = 'container' class="rubberblock-inner">
+</div>
+<div class="rubberfill">
+    <img class="knopamin" id="tablemin" src="{% static "minimize.png" %}"/>
+    <img class="knopamax" id="tablemax" src="{% static "maximize.png" %}"/>
+</div>
+    <div class="rubberblock-inner" id="table">
+        <table>
+            <thead>
+                <tr>
+                    {% for field in oform %}
+                    <td>
+                        {{ field.name }}
+                    </td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <thead>
+                <tr>
+                    {% for field in oform %}
+                    <td>
+                        <div class=outparameter>
+                        {{ field }}
+                        </div>
+                    </td>
+                    {% endfor %}
+                </tr>
+            </thead>
+            {% for line in lines %}
+            <tr>
+
+                {% for field in oform %}
+                <td>
+                    {{ line|get:field.name}}
+                </td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>
+
+<form action="" method="get">
+
+    <div class="parameters">
+
+        {% for field in form%}
+
+            <div class="labelofpar">
+                {{ field.label_tag }}
+            </div>
+
+            <div class="parameter">
+                {{ field }}
+            </div>
+
+            <div class="filler"> </div>
+
+        {% endfor %}
+
+        {% for field in cform%}
+
+            {% if forloop.counter == 2 %}
+
+                <div class="parameter">
+                    <input type=submit value='Load data'> </input>
+                </div>
+
+                <div class="filler"> </div>
+
+            {% endif %}
+
+            <div class="labelofpar">
+                {{ field.label_tag }}
+            </div>
+
+            <div class="parameter">
+                {{ field }}
+            </div>
+
+            <div class="filler"> </div>
+
+        {% endfor %}
+
+        {% for field in gform%}
+
+            <div class="labelofpar">
+                {{ field.label_tag }}
+            </div>
+
+            <div class="parameter">
+                {{ field }}
+            </div>
+
+            <div class="filler"> </div>
+
+        {% endfor %}
+
+    </div>
+    </div>
+
+<script>
+$("#graphmin").click(function(){
+    $("#container").animate({
+        width: "98%",
+        height: "48%",
+    });
+});
+$("#graphmax").click(function(){
+    $("#container").animate({
+        width: "100%",
+        height: "100%",
+    });
+});
+$("#tablemin").click(function(){
+    $("#table").animate({
+        width: "98%",
+        height: "48%",
+    });
+});
+$("#tablemax").click(function(){
+    $("#table").animate({
+        width: "100%",
+        height: "100%",
+    });
+});
+</script>
 {% endblock %}
 

@@ -45,7 +45,7 @@ body {
             table {
                 width: 100%;
                 height: 100%;
-                font-size: 1em;
+                font-size: 10pt;
                 font-family: Verdana, Arial, Helvetica, sans-serif;
                 border-collapse: collapse;
                 border-spacing: 0;
@@ -58,84 +58,144 @@ body {
                 color: #f5f5f5;
                 background: #2F5468;
                 border: 1px solid #fdf6e3;
-                max-height: 15px;
+                height: 25px;
+                max-height: 10%;
+                padding: 0px;
             }
             td, tr {
                 padding: 5px;
                 border: 1px solid #92a1a1;
-                max-height: 15px;
+                max-height: 15%;
+                height: 50px;
                 max-width: 80px;
                 overflow: hidden;
                 font-size: 10pt;
             }
             div {
-                box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.5);
                 border-radius: 15px;
                 background: white;
+                resize: both;
             }
             .rubberblock {
-                position: absolute;
-                top: 10%;
-                left: 25%;
+                <!--position: absolute;-->
+                <!--top: 10%;-->
+                <!--left: 25%;-->
+                display: inline;
+                float: left;
                 max-width: 50%;
                 width: 800px;
-                max-height: 43.75%;
-                height: 700px;
+                max-height: 100%;
+                height: 900px;
                 overflow: hidden;
                 border: 1px solid #c5c5c5;
+                box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.5);
             }
             .rubberblock-inner {
-                position: absolute;
-                top: 0%;
-                left: 0%;
+                display: list-item;
                 width: 98%;
-                height: 97%;
-                border-radius: 10px;
+                height: 48%;
+                border-radius: 8px;
                 padding: 6px 6px;
                 overflow: auto;
+                box-shadow: 0.0em 0.0em 0px rgba(0,0,0,0.0);
             }
+            .rubberfill {
+                display: list-item;
+                width: 98%;
+                height: 5%;
+                box-shadow: 0.0em 0.0em 0px rgba(0,0,0,0.0);
+                }
+
+            .leftspace {
+                display: inline;
+                float: left;
+                width: 25%;
+                background-color: #f5f5f5;
+                }
+            .allspace {
+                position: absolute;
+                background-color: #f5f5f5;
+                top: 7%;
+                width: 100%;
+                height: 100%;
+                }
 
             .parameters {
                 max-width: 20%;
                 width: 250px;
-                max-height: 87.5%;
-                height: 1200px;
-                position: absolute;
-                top: 10%;
-                left: 75%;
+                max-height: 100%;
+                height: 900px;
+                <!--position: absolute;-->
+                <!--top: 10%;-->
+                <!--left: 75%;-->
+                display: inline;
+                float: left;
                 background: #c5c5c5;
+                box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.5);
             }
             .tests {
+                box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.5);
                 width: 250px;
                 height: 100%;
-                position: absolute
-                top: 10%;
-                left: 5%;
+                <!--position: absolute-->
+                <!--top: 10%;-->
+                <!--left: 5%;-->
+                display: inline;
+                float: left;
                 background: #DCF6AA;
                 overflow: auto;
 
             }
+            .knopamax {
+                width: 30px;
+                height: 30px;
+                background: #f5f5f5;
+                border-radius: 10px;
+                cursor: pointer;
+                display: inline;
+                float: right;
+                z-index: 5;
+                }
+            .knopamin {
+                z-index: 5;
+                width: 30px;
+                height: 30px;
+                background: #f5f5f5;
+                border-radius: 10px;
+                cursor: pointer;
+                display: inline;
+                float: right;
+                }
             .parameter {
                 background: #c5c5c5;
                 position: relative;
                 top: 5%;
+                left: 55%;
                 max-height: 20%;
                 width: 200px;
                 max-width: 40%;
                 box-shadow: 0.0em 0.0em 0px rgba(122,122,122,0.0);
                 border-radius: 1px;
-                left: 55%;
+            }
+            .outparameter {
+                background: #2F5468;
+                position: relative;
+                top: -25%;
+                left: 0%;
+                max-height: 15%;
+                width: 200px;
+                max-width: 100%;
             }
             .labelofpar {
                 background: #c5c5c5;
                 position: relative;
                 top: 5%;
+                left: 1%;
                 max-height: 20%;
                 max-width: 54%;
                 width: 200px;
                 box-shadow: 0.0em 0.0em 0px rgba(122,122,122,0.0);
                 border-radius: 1px;
-                left: 1%;
             }
             .filler {
                 background: #c5c5c5;
@@ -158,12 +218,76 @@ body {
                 width: 200px;
                 max-height: 10%;
                 height: 25px;
+                background-color: #e5e5e5;
+                color: #101010;
+                font-size: 12pt;
+                box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.5);
+                border-radius: 5px;
+                border: 1px solid #e5e5e5;
+            }
+            input[type=number]::-webkit-inner-spin-button,
+            input[type=number]::-webkit-outer-spin-button {
+                margin: 0px;
+            }
+            input[type="checkbox"] {
+                -webkit-appearance:none;/* Hides the default checkbox
+                                           style */ 
+                height:2em;
+                width:2em;
+                cursor:pointer;
+                position:relative;
+                -webkit-transition: .15s;
+                border-radius:2em;
+                background-color:#c5c5c5;
+            }
+
+            input[type="checkbox"]:checked {
+                background-color:green;
+            }
+
+            input[type="checkbox"]:before,
+            input[type="checkbox"]:checked:before {
+                position:absolute;
+                top:0;
+                left:0;
+                width:100%;
+                height:100%;
+                line-height:2em;
+                text-align:center;
+                color:#000;
+                content: '✘';
+            }
+
+            input[type="checkbox"]:checked:before {
+                content: '✔';
+            }
+
+            input[type="checkbox"]:hover:before {
+                background:rgba(255,255,255,0.3);
+            }
+
+            input[type="number"] {
+                    -moz-appearance: textfield;
+            }
+            input[type="number"]:hover,
+            input[type="number"]:focus {
+                    -moz-appearance: number-input;
+                    margin: 0px;
+            }
+            input[type="checkbox"] {
+                    -moz-appearance: none;
             }
             select {
                 max-width: 100%;
                 width: 200px;
                 max-height: 10%;
                 height: 25px;
+                background-color: #e5e5e5;
+                color: #101010;
+                font-size: 12pt;
+                box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.5);
+                border-radius: 5px;
+                border: 1px solid #e5e5e5;
             }
 
             label {
@@ -174,7 +298,7 @@ body {
                 width: 250px;
                 max-height: 20%;
                 height: 25px;
-                font-size: 10pt;
+                font-size: 12pt;
             }
 
     </style>
