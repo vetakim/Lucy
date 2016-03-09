@@ -4,7 +4,92 @@
 {% block content %}
 <h1> Calculation results for function {{ funcname }} </h1>
 
-<div class="allspace">
+<script>
+$(function () {
+
+    var $container = $('#container')
+
+        $container.highcharts({
+            chart: {
+                type: "{{ graph_type }}",
+                zoomType: 'xy',
+                spacingTop: 0,
+                spacingBottom: 5,
+                spacingLeft: 5,
+                spacingRight: 5,
+            },
+            xAxis: {
+                title: {
+                    text: "{{ graph_x }}"
+                }
+            },
+            yAxis: {
+                title: {
+                    text: " {{ graph_y }}"
+                }
+            },
+            plotOptions: {
+                scatter: {
+                    marker: {
+                        radius: 2.0
+                    },
+                    lineWidth: 1.0,
+                },
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '{point.name} - {point.y} ({point.percentage:.1f} %)',
+                    }
+                }
+            },
+
+            {% if graph_type == "pie" %}
+            title: {
+                text: 'Sum of lines by {{ category }}'
+            },
+            series: [{
+                data:
+                    [
+
+                    {% for line in lines|pieces:category%}
+                { name: "{{ line| get:0 }}",
+                    y: {{ line|get:1 }}
+                },
+                    {% endfor %}
+                    ]
+
+            }],
+            {% endif %}
+
+            {% if graph_type == "scatter" %}
+            title: {
+                text: '{{ graph_y }} of {{ graph_x }} dependency for each {{ category }}'
+            },
+            series: [
+            {% for line in lines|categorized:category%}
+            {
+                name: "{{ line|get:0 }}",
+                data:
+                    [
+                    {% for point in line|get:1 %}
+                [
+                {{ point | get:graph_x }},
+                {{ point | get:graph_y }}
+                ],
+                {% endfor %}
+
+                    ]},
+            {% endfor %}
+
+            ],
+            {% endif %}
+        });
+});
+</script>
+
+<div id="allpace" class="allspace">
     <div class="leftspace">
         <div class="tests" id="testdiv">
             {% for field in gform %}
@@ -12,112 +97,15 @@
             {% endfor %}
         </div>
     </div>
+
     </form>
-
-    <script>
-$(function () {
-
-    var $container = $('#container'),
-    chart,
-        origChartWidth = 800,
-        origChartHeight = 700,
-            chartWidth = origChartWidth,
-            chartHeight = origChartHeight;
-
-    <!--$(contain).click(function(){-->
-        <!--$("#container").animate({-->
-            <!--width: "98%",-->
-            <!--height: "48%",-->
-        <!--});-->
-    <!--});-->
-    $container.highcharts({
-        chart: {
-            type: "{{ graph_type }}",
-            zoomType: 'xy',
-            spacingTop: 0,
-            spacingBottom: 5,
-            spacingLeft: 5,
-            spacingRight: 5,
-        },
-        xAxis: {
-            title: {
-                text: "{{ graph_x }}"
-            }
-        },
-        yAxis: {
-            title: {
-                text: " {{ graph_y }}"
-            }
-        },
-        plotOptions: {
-            scatter: {
-                marker: {
-                    radius: 2.0
-                },
-                lineWidth: 1.0,
-            },
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    format: '{point.name} - {point.y} ({point.percentage:.1f} %)',
-                }
-            }
-        },
-
-            {% if graph_type == "pie" %}
-        title: {
-            text: 'Sum of lines by {{ category }}'
-        },
-        series: [{
-            data:
-                [
-
-                {% for line in lines|pieces:category%}
-            { name: "{{ line| get:0 }}",
-                y: {{ line|get:1 }}
-            },
-            {% endfor %}
-                ]
-
-        }],
-        {% endif %}
-
-        {% if graph_type == "scatter" %}
-        title: {
-            text: '{{ graph_y }} of {{ graph_x }} dependency for each {{ category }}'
-        },
-        series: [
-        {% for line in lines|categorized:category%}
-        {
-            name: "{{ line|get:0 }}",
-            data:
-                [
-                {% for point in line|get:1 %}
-            [
-            {{ point | get:graph_x }},
-            {{ point | get:graph_y }}
-            ],
-            {% endfor %}
-
-                ]},
-        {% endfor %}
-
-        ],
-        {% endif %}
-    });
-});
-    </script>
-
-    <div class="rubberblock">
-        <div class="rubberfill">
+    <div id="dbview" class="rubberblock">
+        <div id="graphknopa" class="rubberfill">
             <img class="knopamin" id="graphmin" src="{% static "minimize.png" %}"/>
             <img class="knopamax" id="graphmax" src="{% static "maximize.png" %}"/>
         </div>
-        <div id = 'container' class="rubberblock-inner">
-        </div>
-        <div class="rubberfill">
+        <div id = 'container' class="rubberblock-inner"> </div>
+        <div id="tableknopa" class="rubberfill">
             <img class="knopamin" id="tablemin" src="{% static "minimize.png" %}"/>
             <img class="knopamax" id="tablemax" src="{% static "maximize.png" %}"/>
         </div>
@@ -157,9 +145,11 @@ $(function () {
         </div>
     </div>
 
-    <form action="" method="get">
+    <div class="vfill"> </div>
 
-        <div class="parameters">
+    <div id="parameters" class="parameters">
+        <div class="filler" style="position: relative; top: 5%"> </div>
+        <form action="" method="get">
 
             {% for field in form%}
 
@@ -213,35 +203,84 @@ $(function () {
 
             {% endfor %}
 
-        </div>
+        </form>
+    </div>
 </div>
 
 <script>
 $("#graphmin").click(function(){
     $("#container").animate({
         width: "98%",
-        height: "48%",
+        height: "46%",
     });
+    $("#dbview").animate({
+        width: "50%",
+        height: "100%",
+    });
+    $("#testdiv").show();
+    $("#parameters").show();
+    var chart = $('#container').highcharts();
+    chart.setSize(
+            $("#dbview").width() * 0.5,
+            $("#dbview").height() * 0.4,
+            true
+            );
 });
+
 $("#graphmax").click(function(){
     $("#container").animate({
         width: "100%",
         height: "100%",
     });
+    $("#dbview").animate({
+        width: "100%",
+        height: "100%",
+    });
+    $("#graphknopa").animate({
+        width: "100%",
+    });
+    $("#testdiv").hide();
+    $("#parameters").hide();
+    var chart = $('#container').highcharts();
+    chart.setSize(
+            $("#dbview").width() * 2,
+            $("#dbview").height() * 0.8,
+            true
+            );
 });
+
 $("#tablemin").click(function(){
     $("#table").animate({
         width: "98%",
-        height: "48%",
+        height: "46%",
     });
+    $("#dbview").animate({
+        width: "50%",
+        height: "100%",
+    });
+    $("#testdiv").show();
+    $("#parameters").show();
+    $("#container").show();
+    $("#graphknopa").show();
 });
 $("#tablemax").click(function(){
     $("#table").animate({
         width: "100%",
         height: "100%",
     });
+    $("#dbview").animate({
+        width: "100%",
+        height: "100%",
+    });
+    $("#tableknopa").animate({
+        width: "100%",
+    });
+    $("#testdiv").hide();
+    $("#parameters").hide();
+    $("#container").hide();
+    $("#graphknopa").hide();
 });
-    </script>
+</script>
 
 {% endblock %}
 
