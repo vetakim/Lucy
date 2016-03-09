@@ -3,31 +3,33 @@
 {% load staticfiles %}
 {% block content %}
 <h1> Calculation results for function {{ funcname }} </h1>
+
 <div class="allspace">
-<div class="leftspace">
-    <div class="tests" id="testdiv">
-        {% for field in gform %}
-        <ul> {{ field.label }} </ul>
-        {% endfor %}
+    <div class="leftspace">
+        <div class="tests" id="testdiv">
+            {% for field in gform %}
+            <ul> {{ field.label }} </ul>
+            {% endfor %}
+        </div>
     </div>
-</div>
+    </form>
 
-
-
-
-</form>
-
-
-<script>
+    <script>
 $(function () {
 
     var $container = $('#container'),
     chart,
-    origChartWidth = 800,
-    origChartHeight = 700,
-    chartWidth = origChartWidth,
-    chartHeight = origChartHeight;
+        origChartWidth = 800,
+        origChartHeight = 700,
+            chartWidth = origChartWidth,
+            chartHeight = origChartHeight;
 
+    <!--$(contain).click(function(){-->
+        <!--$("#container").animate({-->
+            <!--width: "98%",-->
+            <!--height: "48%",-->
+        <!--});-->
+    <!--});-->
     $container.highcharts({
         chart: {
             type: "{{ graph_type }}",
@@ -64,7 +66,7 @@ $(function () {
             }
         },
 
-        {% if graph_type == "pie" %}
+            {% if graph_type == "pie" %}
         title: {
             text: 'Sum of lines by {{ category }}'
         },
@@ -73,10 +75,10 @@ $(function () {
                 [
 
                 {% for line in lines|pieces:category%}
-                    { name: "{{ line| get:0 }}",
-                        y: {{ line|get:1 }}
-                    },
-                    {% endfor %}
+            { name: "{{ line| get:0 }}",
+                y: {{ line|get:1 }}
+            },
+            {% endfor %}
                 ]
 
         }],
@@ -87,79 +89,79 @@ $(function () {
             text: '{{ graph_y }} of {{ graph_x }} dependency for each {{ category }}'
         },
         series: [
-            {% for line in lines|categorized:category%}
-            {
+        {% for line in lines|categorized:category%}
+        {
             name: "{{ line|get:0 }}",
             data:
                 [
-                    {% for point in line|get:1 %}
-                        [
-                        {{ point | get:graph_x }},
-                        {{ point | get:graph_y }}
-                        ],
-                    {% endfor %}
+                {% for point in line|get:1 %}
+            [
+            {{ point | get:graph_x }},
+            {{ point | get:graph_y }}
+            ],
+            {% endfor %}
 
                 ]},
-            {% endfor %}
+        {% endfor %}
 
         ],
         {% endif %}
     });
 });
-</script>
+    </script>
 
-<div class="rubberblock">
-<div class="rubberfill">
-    <img class="knopamin" id="graphmin" src="{% static "minimize.png" %}"/>
-    <img class="knopamax" id="graphmax" src="{% static "maximize.png" %}"/>
-</div>
-<div id = 'container' class="rubberblock-inner">
-</div>
-<div class="rubberfill">
-    <img class="knopamin" id="tablemin" src="{% static "minimize.png" %}"/>
-    <img class="knopamax" id="tablemax" src="{% static "maximize.png" %}"/>
-</div>
-    <div class="rubberblock-inner" id="table">
-        <table>
-            <thead>
+    <div class="rubberblock">
+        <div class="rubberfill">
+            <img class="knopamin" id="graphmin" src="{% static "minimize.png" %}"/>
+            <img class="knopamax" id="graphmax" src="{% static "maximize.png" %}"/>
+        </div>
+        <div id = 'container' class="rubberblock-inner">
+        </div>
+        <div class="rubberfill">
+            <img class="knopamin" id="tablemin" src="{% static "minimize.png" %}"/>
+            <img class="knopamax" id="tablemax" src="{% static "maximize.png" %}"/>
+        </div>
+        <div class="rubberblock-inner" id="table">
+            <table>
+                <thead>
+                    <tr>
+                        {% for field in oform %}
+                        <td>
+                            {{ field.name }}
+                        </td>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <thead>
+                    <tr>
+                        {% for field in oform %}
+                        <td>
+                            <div class=outparameter>
+                                {{ field }}
+                            </div>
+                        </td>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                {% for line in lines %}
                 <tr>
+
                     {% for field in oform %}
                     <td>
-                        {{ field.name }}
+                        {{ line|get:field.name}}
                     </td>
                     {% endfor %}
                 </tr>
-            </thead>
-            <thead>
-                <tr>
-                    {% for field in oform %}
-                    <td>
-                        <div class=outparameter>
-                        {{ field }}
-                        </div>
-                    </td>
-                    {% endfor %}
-                </tr>
-            </thead>
-            {% for line in lines %}
-            <tr>
-
-                {% for field in oform %}
-                <td>
-                    {{ line|get:field.name}}
-                </td>
                 {% endfor %}
-            </tr>
-            {% endfor %}
-        </table>
+            </table>
+        </div>
     </div>
-</div>
 
-<form action="" method="get">
+    <form action="" method="get">
 
-    <div class="parameters">
+        <div class="parameters">
 
-        {% for field in form%}
+            {% for field in form%}
 
             <div class="labelofpar">
                 {{ field.label_tag }}
@@ -171,17 +173,17 @@ $(function () {
 
             <div class="filler"> </div>
 
-        {% endfor %}
+            {% endfor %}
 
-        {% for field in cform%}
+            {% for field in cform%}
 
             {% if forloop.counter == 2 %}
 
-                <div class="parameter">
-                    <input type=submit value='Load data'> </input>
-                </div>
+            <div class="parameter">
+                <input type=submit value='Load data'> </input>
+            </div>
 
-                <div class="filler"> </div>
+            <div class="filler"> </div>
 
             {% endif %}
 
@@ -195,9 +197,9 @@ $(function () {
 
             <div class="filler"> </div>
 
-        {% endfor %}
+            {% endfor %}
 
-        {% for field in gform%}
+            {% for field in gform%}
 
             <div class="labelofpar">
                 {{ field.label_tag }}
@@ -209,10 +211,10 @@ $(function () {
 
             <div class="filler"> </div>
 
-        {% endfor %}
+            {% endfor %}
 
-    </div>
-    </div>
+        </div>
+</div>
 
 <script>
 $("#graphmin").click(function(){
@@ -239,6 +241,7 @@ $("#tablemax").click(function(){
         height: "100%",
     });
 });
-</script>
+    </script>
+
 {% endblock %}
 

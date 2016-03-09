@@ -77,23 +77,24 @@ body {
                 resize: both;
             }
             .rubberblock {
-                <!--position: absolute;-->
-                <!--top: 10%;-->
-                <!--left: 25%;-->
                 display: inline;
                 float: left;
                 max-width: 50%;
                 width: 800px;
                 max-height: 100%;
                 height: 900px;
-                overflow: hidden;
+                <!--overflow: hidden;-->
+                overflow: auto;
                 border: 1px solid #c5c5c5;
                 box-shadow: 0.4em 0.4em 5px rgba(122,122,122,0.5);
             }
             .rubberblock-inner {
                 display: list-item;
-                width: 98%;
-                height: 48%;
+                float: top;
+                max-width: 98%;
+                width: 800px;
+                height: 360px;
+                max-height: 40%;
                 border-radius: 8px;
                 padding: 6px 6px;
                 overflow: auto;
@@ -101,8 +102,11 @@ body {
             }
             .rubberfill {
                 display: list-item;
-                width: 98%;
-                height: 5%;
+                float: top;
+                max-width: 98%;
+                width: 800px;
+                height: 40px;
+                max-height: 5%;
                 box-shadow: 0.0em 0.0em 0px rgba(0,0,0,0.0);
                 }
 
@@ -150,7 +154,7 @@ body {
                 width: 30px;
                 height: 30px;
                 background: #f5f5f5;
-                border-radius: 10px;
+                border-radius: 0px;
                 cursor: pointer;
                 display: inline;
                 float: right;
@@ -161,7 +165,7 @@ body {
                 width: 30px;
                 height: 30px;
                 background: #f5f5f5;
-                border-radius: 10px;
+                border-radius: 0px;
                 cursor: pointer;
                 display: inline;
                 float: right;
