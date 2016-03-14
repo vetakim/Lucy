@@ -8,24 +8,51 @@
 $(function () {
 
     var $container = $('#container')
+    var base = Highcharts.Color("#ff6666")
 
         $container.highcharts({
             chart: {
-                type: "{{ graph_type }}",
+                type: "{{ gform.graph_type.value }}",
                 zoomType: 'xy',
                 spacingTop: 0,
-                spacingBottom: 5,
+                spacingBottom: 15,
                 spacingLeft: 5,
                 spacingRight: 5,
+                style: {
+                    fontFamily: 'serif',
+                    fontSize: "10pt",
+                    fontWeight: "normal",
+                }
+            },
+            legend: {
+                itemStyle: {
+                    fontSize: "8pt",
+                    fontWeight: "normal"
+                },
+                title: {
+                    text:
+                        "{% for field in form %}" +
+                        "{{field.label}} = {{ field.value}}, " +
+                        "{% endfor %}",
+                    style: {
+                        fontSize: "8pt",
+                        fontWeight: "normal"
+                    }
+                },
+                layout: "horizontal",
+                align: "right",
+                verticalAlign: "bottom",
+                itemWidth: 400,
+                lineHeight: 50,
             },
             xAxis: {
                 title: {
-                    text: "{{ graph_x }}"
+                    text: "{{ gform.graph_x.value }}"
                 }
             },
             yAxis: {
                 title: {
-                    text: " {{ graph_y }}"
+                    text: " {{ gform.graph_y.value }}"
                 }
             },
             plotOptions: {
@@ -34,49 +61,65 @@ $(function () {
                         radius: 2.0
                     },
                     lineWidth: 1.0,
+                    dataLabels: {
+                        style: {
+                            fontFamily: 'serif',
+                            fontSize: "8pt",
+                            fontWeight: "normal",
+                        },
+                    },
+                    showInLegend: true
                 },
                 pie: {
                     allowPointSelect: true,
                     cursor: 'pointer',
                     dataLabels: {
+                        style: {
+                            fontFamily: 'serif',
+                            fontSize: "8pt",
+                            fontWeight: "normal",
+                        },
                         enabled: true,
-                        format: '{point.name} - {point.y} ({point.percentage:.1f} %)',
-                    }
+                        format: "{point.name},<br>{point.y} lines ({point.percentage:.1f} % of total)</br>",
+                    },
+                    showInLegend: true
                 }
             },
 
-            {% if graph_type == "pie" %}
+            {% if gform.graph_type.value == "pie" %}
             title: {
-                text: 'Sum of lines by {{ category }}'
+                text: '',
             },
             series: [{
                 data:
                     [
-
-                    {% for line in lines|pieces:category%}
-                { name: "{{ line| get:0 }}",
-                    y: {{ line|get:1 }}
-                },
+                    {% for line in lines|pieces:gform.category.value %}
+                        { name: "{{ gform.category.value }} {{ line| get:0 }}",
+                            y: {{ line|get:1 }},
+                            color: base.brighten({{ line|get:1 }} / {{ lines|length}} - 0.45).get(),
+                        },
                     {% endfor %}
                     ]
 
             }],
             {% endif %}
 
-            {% if graph_type == "scatter" %}
+            {% if gform.graph_type.value == "scatter" %}
             title: {
-                text: '{{ graph_y }} of {{ graph_x }} dependency for each {{ category }}'
+                text: "{{ gform.graph_y.value }}" +
+                    "of {{ gform.graph_x.value }}" +
+                    "dependency for each {{ gform.category.value }}"
             },
             series: [
-            {% for line in lines|categorized:category%}
+            {% for line in lines|categorized:gform.category.value %}
             {
-                name: "{{ line|get:0 }}",
+                name: "{{category}} {{ line|get:0 }}",
                 data:
                     [
                     {% for point in line|get:1 %}
                 [
-                {{ point | get:graph_x }},
-                {{ point | get:graph_y }}
+                {{ point | get:gform.graph_x.value }},
+                {{ point | get:gform.graph_y.value }}
                 ],
                 {% endfor %}
 
@@ -92,9 +135,7 @@ $(function () {
 <div id="allpace" class="allspace">
     <div class="leftspace">
         <div class="tests" id="testdiv">
-            {% for field in gform %}
-            <ul> {{ field.label }} </ul>
-            {% endfor %}
+            {{ form.label }}
         </div>
     </div>
 

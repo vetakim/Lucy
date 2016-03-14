@@ -111,10 +111,6 @@ def accept_data(request):
              "oform": oform,
              "gform": gform,
              "calcout": calcout,
-             "graph_y": graph_y,
-             "graph_x": graph_x,
-             "category": category,
-             "graph_type": graph_type,
              "lines": lines})
 
 # Create your views here.
