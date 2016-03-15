@@ -116,7 +116,7 @@ $(function () {
                 name: "{{category}} {{ line|get:0 }}",
                 data:
                     [
-                    {% for point in line|get:1 %}
+                    {% for point in line|get:1|dictsort:gform.graph_x.value %}
                 [
                 {{ point | get:gform.graph_x.value }},
                 {{ point | get:gform.graph_y.value }}
