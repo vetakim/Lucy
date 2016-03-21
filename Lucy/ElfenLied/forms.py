@@ -1,8 +1,9 @@
 from django.forms import *
 from django import forms
 from .models import *
-from priority.scheduler import laws, planner
+from priority.scheduler import planner
 from priority.sharetools import column
+from priority.shed import laws
 
 modeloutput = RequisitionOutput
 modelinput = RequisitionInput

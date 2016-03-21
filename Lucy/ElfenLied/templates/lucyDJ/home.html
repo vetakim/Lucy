@@ -80,7 +80,9 @@ $(function () {
                             fontWeight: "normal",
                         },
                         enabled: true,
-                        format: "{point.name},<br>{point.y} lines ({point.percentage:.1f} % of total)</br>",
+                        format: "{point.name}," +
+                            "<br>{point.y} lines </br>" +
+                            "<br>({point.percentage:.1f} % of total {{ lines|length}} )</br>",
                     },
                     showInLegend: true
                 }
@@ -107,8 +109,8 @@ $(function () {
             {% if gform.graph_type.value == "scatter" %}
             title: {
                 text: "{{ gform.graph_y.value }}" +
-                    "of {{ gform.graph_x.value }}" +
-                    "dependency for each {{ gform.category.value }}"
+                    " of {{ gform.graph_x.value }}" +
+                    " dependency for each {{ gform.category.value }}"
             },
             series: [
             {% for line in lines|categorized:gform.category.value %}

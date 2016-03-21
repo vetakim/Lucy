@@ -1,5 +1,6 @@
 from django.db import models
-from priority.scheduler import laws, planner
+from priority.scheduler import planner
+from priority.shed import laws
 
 class Point(models.Model):
     abscissa = models.FloatField()
@@ -24,7 +25,6 @@ class RequisitionInput(models.Model):
             default = IN_CHOICES[0][0])
 
 class RequisitionOutput(models.Model):
-    arrival_time = models.FloatField()
     start_time = models.FloatField()
     lifetime = models.FloatField()
     duration = models.FloatField()
@@ -35,18 +35,17 @@ class RequisitionOutput(models.Model):
     row = models.FloatField()
     tact = models.FloatField()
     num = models.IntegerField()
+    observing_num = models.IntegerField()
     direction = models.IntegerField()
     tfirst = models.FloatField()
-    cb = models.FloatField()
     precedence = models.FloatField()
     catastrophe = models.BooleanField()
 
     CHOICES = (
             ('num', 'number'),
-            ('cb', 'cb'),
+            ('observing_num', 'observe number'),
             ('action', 'Action'),
             ('object_type', 'Object'),
-            ('arrival_time', 'Arrival time'),
             ('start_time', 'Start time'),
             ('lifetime', 'Lifetime'),
             ('duration', 'Duration'),
