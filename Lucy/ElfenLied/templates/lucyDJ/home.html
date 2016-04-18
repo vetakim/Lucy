@@ -24,6 +24,17 @@ $(function () {
                     fontWeight: "normal",
                 }
             },
+            exporting: {
+                fallbackToExportServer: false,
+                filename: "{% if gform.graph_type.value == "pie" %}" +
+                    "{{ gform.category.value }}" +
+                    "{% elif gform.graph_type.value == "scatter" %}" +
+                    "{{ gform.graph_y.value }}_of_{{ gform.graph_x.value }}" +
+                    "{% endif %}" +
+                        "{% for field in form %}" +
+                    "_{{ field.label }}_{{field.value}}" +
+                    "{% endfor %}",
+            },
             legend: {
                 itemStyle: {
                     fontSize: "8pt",
