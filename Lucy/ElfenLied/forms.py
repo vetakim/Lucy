@@ -1,6 +1,9 @@
 from django.forms import *
 from django import forms
+from django.utils.translation import ugettext_lazy as _
+
 from .models import *
+
 from priority.scheduler import planner
 from priority.sharetools import column
 from priority.shed import laws
@@ -17,30 +20,13 @@ class CalcClear(forms.Form):
             widget=forms.TextInput(attrs={
                 'type': 'submit', 'value': 'Clear DB' }))
 
-
-class PointParams(forms.Form):
-    amplitude = FloatField(label="Amplitude",
-            widget=forms.TextInput(attrs={'type':
-                'number', 'class': 'parinput', 'style': 'top: 5%', 'step': '1e-6'}))
-
-    samples = IntegerField(label="Samples",
-                widget=forms.TextInput(attrs={'type':
-                    'number', 'class': 'parinput', 'style': 'top: 25%'}))
-    choose_x_points = ChoiceField(required=False, label='x-axis',
-            choices=Point.CHOICES,
-            widget=forms.Select(attrs={'style': 'top: 10%'}))
-
-    choose_y_points = ChoiceField(required=False, label='y-axis',
-            choices=Point.CHOICES,
-            widget=forms.Select(attrs={'style': 'top: 15%'}))
-
-
 class Input(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ModelForm, self).__init__(*args, **kwargs)
     class Meta:
         model = modelinput
-        fields = calcfunc.__code__.co_varnames[:planner.__code__.co_argcount]
+        fields = calcfunc.__code__.co_varnames[:calcfunc.__code__.co_argcount]
+        labels = {j: _(j.capitalize(),) for j in fields}
 
 class Output(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -56,5 +42,4 @@ class Graph(forms.ModelForm):
     class Meta:
         model = Graph
         fields = ('graph_x', 'graph_y', 'category', 'graph_type')
-
 

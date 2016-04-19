@@ -20,7 +20,7 @@ $(function () {
                 spacingRight: 5,
                 style: {
                     fontFamily: 'serif',
-                    fontSize: "10pt",
+                    fontSize: "12pt",
                     fontWeight: "normal",
                 }
             },
@@ -46,7 +46,7 @@ $(function () {
                         "{{field.label}} = {{ field.value}}, " +
                         "{% endfor %}",
                     style: {
-                        fontSize: "8pt",
+                        fontSize: "12pt",
                         fontWeight: "normal"
                     }
                 },
@@ -54,7 +54,7 @@ $(function () {
                 align: "right",
                 verticalAlign: "bottom",
                 itemWidth: 400,
-                lineHeight: 50,
+                lineHeight: 100,
             },
             xAxis: {
                 title: {
@@ -75,7 +75,7 @@ $(function () {
                     dataLabels: {
                         style: {
                             fontFamily: 'serif',
-                            fontSize: "8pt",
+                            fontSize: "12pt",
                             fontWeight: "normal",
                         },
                     },
@@ -87,7 +87,7 @@ $(function () {
                     dataLabels: {
                         style: {
                             fontFamily: 'serif',
-                            fontSize: "8pt",
+                            fontSize: "12pt",
                             fontWeight: "normal",
                         },
                         enabled: true,
@@ -95,7 +95,7 @@ $(function () {
                             "<br>{point.y} lines </br>" +
                             "<br>({point.percentage:.1f} % of total {{ lines|length}} )</br>",
                     },
-                    showInLegend: true
+                    showInLegend: false
                 }
             },
 
